@@ -38,7 +38,10 @@ class Transaction extends \yii\db\ActiveRecord {
     {
         return self::PROTECT;;
     }
-    
+      public static function OK()
+    {
+        return self::OK;;
+    }  
     /**
      * @inheritdoc
      */
@@ -55,8 +58,8 @@ class Transaction extends \yii\db\ActiveRecord {
         return [
             [['recipient_id', 'cost', 'type_id'], 'required'],
             [['sender_id', 'recipient_id', 'type_id', 'status_id'], 'integer'],
-            //[['cost'], 'passwordStrength'],
-            ['cost', 'match', 'pattern' => '/^\d{1,8}\.\d{2}$/'],
+            [['cost'], 'number'],
+            //['cost', 'match', 'pattern' => '/^\d{1,8}\.\d{2}$/'],
             [['transaction_id', 'protect_code'], 'string', 'max' => 255],
             [['transaction_id'], 'unique'],
             [['recipient_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['recipient_id' => 'id']],
@@ -124,8 +127,8 @@ class Transaction extends \yii\db\ActiveRecord {
                 $this->transaction_id = $security->generateRandomString();
             if (Yii::$app->user->identity->id)
                 $this->sender_id = Yii::$app->user->identity->id;
-
-            if ($this->type_id == self::PROTECT)
+            $request = Yii::$app->request;
+            if ($this->type_id == self::PROTECT && empty($request->post('PROTECT')))
             {
                 $this->protect_code = uniqid();
                 $this->status_id = self::WAIT;

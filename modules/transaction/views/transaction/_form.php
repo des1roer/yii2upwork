@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+
 /* @var $this yii\web\View */
 /* @var $model app\modules\transaction\models\Transaction */
 /* @var $form yii\widgets\ActiveForm */
@@ -34,17 +35,17 @@ use yii\helpers\ArrayHelper;
 
     echo $form->field($model, 'type_id')->dropDownList($items, $params);
 
-    /*$status_id = app\modules\transaction\models\Status::find()->all();
-    $items = ArrayHelper::map($status_id, 'id', 'name');
+    /* $status_id = app\modules\transaction\models\Status::find()->all();
+      $items = ArrayHelper::map($status_id, 'id', 'name');
 
-    echo $form->field($model, 'status_id')->dropDownList($items, $params);*/
+      echo $form->field($model, 'status_id')->dropDownList($items, $params); */
     ?>
     <?= $form->field($model, 'cost')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group" style="padding-left: 210px">
-<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['id' => 'submit', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['id' => 'submit', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

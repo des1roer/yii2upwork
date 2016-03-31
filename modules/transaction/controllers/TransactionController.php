@@ -51,6 +51,22 @@ class TransactionController extends Controller {
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        
+        if ($_POST)
+        {
+            $request = Yii::$app->request;
+            $code = $request->post('PROTECT');
+            if ($code == $model->protect_code)
+            {
+                $model->status_id = $model::OK;                
+                if ($model->save())
+                {
+                    return $this->redirect('index');
+                }
+            }
+        }
+
         return $this->render('view', [
                     'model' => $this->findModel($id),
         ]);
@@ -66,8 +82,8 @@ class TransactionController extends Controller {
         $model = new Transaction();
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
-           // echo '<pre>';
-          //  var_dump($model);
+            // echo '<pre>';
+            //  var_dump($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
         else

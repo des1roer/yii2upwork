@@ -34,23 +34,24 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
     </p>
-    <?php
-    
-    echo $model->PROTECT;
-    $form = ActiveForm::begin([
-                'id' => 'login-form',
-                'options' => ['class' => 'form-horizontal'],
-                'fieldConfig' => [
-                    'template' => '{label}<div class="col-sm-10">{input}</div><div class="col-sm-10">{error}</div>',
-                    'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                ],
-    ]);
+    <?php   
+    if ($model::PROTECT == $model->type_id)
+    {
+        $form = ActiveForm::begin([
+                    'id' => 'login-form',
+                    'options' => ['class' => 'form-horizontal'],
+                    'fieldConfig' => [
+                        'template' => '{label}<div class="col-sm-10">{input}</div><div class="col-sm-10">{error}</div>',
+                        'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                    ],
+        ]);
+        ?>
+        <?= Html::input('text', 'PROTECT') ?>
+        <?= Html::submitButton('Подтвердить', ['id' => 'submit', 'class' => 'btn btn-success']) ?>
+        <?php ActiveForm::end(); ?>
+        <?php
+    }
     ?>
-    <?= Html::input('text', 'username') ?>
-    <?= Html::submitButton('Подтвердить', ['id' => 'submit', 'class' => 'btn btn-success']) ?>
-<?php ActiveForm::end(); ?>
-
-
     <?=
     DetailView::widget([
         'model' => $model,
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'cost',
             ['attribute' => 'type_id', 'value' => $model->type->name,],
             ['attribute' => 'status_id', 'value' => $model->status->name,],
-        //'protect_code',
+        ['attribute' => 'protect_code', 'visible' => ($model->sender_id == Yii::$app->user->identity->id)],
         ],
     ])
     ?>
